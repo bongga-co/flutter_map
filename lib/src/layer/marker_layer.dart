@@ -92,7 +92,6 @@ class Marker {
     AnchorPos anchorPos,
   }) : this.anchor = Anchor._forPos(anchorPos, width, height);
 
-
   Marker from(LatLng point) {
     return Marker(
       point: point,
@@ -102,7 +101,6 @@ class Marker {
       anchorPos: AnchorPos.exactly(anchor),
     );
   }
-
 }
 
 class MarkerLayer extends StatelessWidget {
@@ -128,7 +126,6 @@ class MarkerLayer extends StatelessWidget {
   }
 
   List<Widget> _buildMarkerWidgets(BuildContext context) {
-
     points.addAll(markerOpts.markers.map((marker) => marker.point).toList());
 
     int i = 0;
@@ -159,28 +156,27 @@ class EditableMarkerWidget extends EditablePointWidget {
   final List<LatLng> points;
   final MarkerLayerOptions options;
 
-  EditableMarkerWidget(this.index, this.points, this.map, this.options) :
-    super(
-      map: map,
-        size: Size(options.markers[index].width, options.markers[index].height),
-        builder: options.markers[index].builder,
-        translate: (Offset position, bool toLocal) {
-          double dx = options.markers[index].anchor.left - options.markers[index].width;
-          double dy = options.markers[index].anchor.top - options.markers[index].height;
-          return position.translate(
-            toLocal ? dx : -dx,
-            toLocal ? dy : -dy,
-          );
-        },
-        index: index,
-        points: points,
-        onDragUpdate: (int index, LatLng point) {
-          points[index] = point;
-          options.markers[index] = options.markers[index].from(point);
-          options.onMoved(options.markers[index], point);
-        }
-    );
-
-
+  EditableMarkerWidget(this.index, this.points, this.map, this.options)
+      : super(
+            map: map,
+            size: Size(
+                options.markers[index].width, options.markers[index].height),
+            builder: options.markers[index].builder,
+            translate: (Offset position, bool toLocal) {
+              double dx = options.markers[index].anchor.left -
+                  options.markers[index].width;
+              double dy = options.markers[index].anchor.top -
+                  options.markers[index].height;
+              return position.translate(
+                toLocal ? dx : -dx,
+                toLocal ? dy : -dy,
+              );
+            },
+            index: index,
+            points: points,
+            onDragUpdate: (int index, LatLng point) {
+              points[index] = point;
+              options.markers[index] = options.markers[index].from(point);
+              options.onMoved(options.markers[index], point);
+            });
 }
-
