@@ -1,99 +1,149 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
-
 import '../widgets/drawer.dart';
+import 'package:latlong/latlong.dart';
 
 class OnTapPage extends StatefulWidget {
   static const String route = 'on_tap';
 
   @override
   OnTapPageState createState() {
-    return OnTapPageState();
+    return new OnTapPageState();
   }
 }
 
 class OnTapPageState extends State<OnTapPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  static LatLng london = LatLng(51.5, -0.09);
-  static LatLng paris = LatLng(48.8566, 2.3522);
-  static LatLng dublin = LatLng(53.3498, -6.2603);
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  static LatLng london = new LatLng(51.5, -0.09);
+  static LatLng paris = new LatLng(48.8566, 2.3522);
+  static LatLng dublin = new LatLng(53.3498, -6.2603);
 
-  @override
   Widget build(BuildContext context) {
     var markers = <Marker>[
-      Marker(
+      new Marker(
         width: 80.0,
         height: 80.0,
         point: london,
-        builder: (ctx) => Container(
-            child: GestureDetector(
-          onTap: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text('Tapped on blue FlutterLogo Marker'),
-            ));
-          },
-          child: FlutterLogo(),
-        )),
+        builder: (ctx) => new Container(
+                child: new GestureDetector(
+                  onTap: () => _onTap("Tapped on green FlutterLogo Marker"),
+                  child: new FlutterLogo(),
+            )),
       ),
-      Marker(
+      new Marker(
         width: 80.0,
         height: 80.0,
         point: dublin,
-        builder: (ctx) => Container(
-            child: GestureDetector(
-          onTap: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text('Tapped on green FlutterLogo Marker'),
-            ));
-          },
-          child: FlutterLogo(
-            colors: Colors.green,
-          ),
-        )),
+        builder: (ctx) => new Container(
+                child: new GestureDetector(
+                  onTap: () => _onTap("Tapped on green FlutterLogo Marker"),
+                  child: new FlutterLogo(
+                    colors: Colors.green,
+                  ),
+                )),
       ),
-      Marker(
+      new Marker(
         width: 80.0,
         height: 80.0,
         point: paris,
-        builder: (ctx) => Container(
-            child: GestureDetector(
-          onTap: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text('Tapped on purple FlutterLogo Marker'),
-            ));
-          },
-          child: FlutterLogo(colors: Colors.purple),
-        )),
+        builder: (ctx) => new Container(
+                child: new GestureDetector(
+                  onTap: () => _onTap("Tapped on purple FlutterLogo Marker"),
+                  child: new FlutterLogo(colors: Colors.purple),
+                )),
       ),
     ];
 
-    return Scaffold(
+    var points = <LatLng>[
+      new LatLng(51.5, -0.09),
+      new LatLng(53.3498, -6.2603),
+      new LatLng(48.8566, 2.3522),
+    ];
+
+    var polylines = <Polyline>[
+      new Polyline(
+        points: points,
+        strokeWidth: 4.0,
+        color: Colors.purple,
+      ),
+    ];
+
+
+    var points2 = List<LatLng>.from(points.map((point) => new LatLng(
+      point.latitude - 2.5, point.longitude)));
+
+    var polygons = <Polygon>[
+      new Polygon(
+        points: points2,
+        color: Colors.green,
+        borderColor: Colors.greenAccent,
+        borderStrokeWidth: 4.0,
+      ),
+    ];
+
+    var points3 = List<LatLng>.from(points2.map((point) => new LatLng(
+      point.latitude - 2.5, point.longitude)));
+
+
+    var circles = <CircleMarker>[
+      new CircleMarker(
+        point: points3[0],
+        radius: 30.0,
+        color: Colors.yellow,
+        borderColor: Colors.yellowAccent,
+        borderStrokeWidth: 4.0,
+      ),
+      new CircleMarker(
+        point: points3[1],
+        radius: 30.0,
+        color: Colors.deepOrange,
+        borderColor: Colors.deepOrangeAccent,
+        borderStrokeWidth: 4.0,
+      ),
+    ];
+
+
+    return new Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text('OnTap')),
+      appBar: new AppBar(title: new Text("OnTap")),
       drawer: buildDrawer(context, OnTapPage.route),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
+      body: new Padding(
+        padding: new EdgeInsets.all(8.0),
+        child: new Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Text('Try tapping on the markers'),
+            new Padding(
+              padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: new Text("Try tapping on the markers"),
             ),
-            Flexible(
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+            new Flexible(
+              child: new FlutterMap(
+                options: new MapOptions(
+                  center: new LatLng(51.5, -0.09),
                   zoom: 5.0,
                   maxZoom: 5.0,
                   minZoom: 3.0,
                 ),
                 layers: [
-                  TileLayerOptions(
+                  new TileLayerOptions(
                       urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                       subdomains: ['a', 'b', 'c']),
-                  MarkerLayerOptions(markers: markers)
+                  new CircleLayerOptions(
+                    circles: circles,
+                    onTap: (CircleMarker circle, LatLng point) =>
+                    _onTap("Tapped on $circle")
+                  ),
+                  new PolylineLayerOptions(
+                      polylines: polylines,
+                      onTap: (Polyline polyline, LatLng point) =>
+                          _onTap("Tapped on $polyline")
+                  ),
+                  new PolygonLayerOptions(
+                      polygons: polygons,
+                      onTap: (Polygon polygon, LatLng point) =>
+                          _onTap("Tapped on $polygon")
+                  ),
+                  new MarkerLayerOptions(markers: markers),
                 ],
               ),
             ),
@@ -101,5 +151,12 @@ class OnTapPageState extends State<OnTapPage> {
         ),
       ),
     );
+  }
+
+  void _onTap(String msg) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(msg),
+      duration: Duration(seconds: 1),
+    ));
   }
 }

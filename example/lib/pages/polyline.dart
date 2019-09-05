@@ -1,47 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import '../widgets/drawer.dart';
 import 'package:latlong/latlong.dart';
 
-import '../widgets/drawer.dart';
-
 class PolylinePage extends StatelessWidget {
-  static const String route = 'polyline';
+  static const String route = "polyline";
 
-  @override
   Widget build(BuildContext context) {
     var points = <LatLng>[
-      LatLng(51.5, -0.09),
-      LatLng(53.3498, -6.2603),
-      LatLng(48.8566, 2.3522),
+      new LatLng(51.5, -0.09),
+      new LatLng(53.3498, -6.2603),
+      new LatLng(48.8566, 2.3522),
     ];
-    return Scaffold(
-      appBar: AppBar(title: Text('Polylines')),
+    return new Scaffold(
+      appBar: new AppBar(title: new Text("Polylines")),
       drawer: buildDrawer(context, PolylinePage.route),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
+      body: new Padding(
+        padding: new EdgeInsets.all(8.0),
+        child: new Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Text('Polylines'),
+            new Padding(
+              padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: new Text("Polylines"),
             ),
-            Flexible(
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+            new Flexible(
+              child: new FlutterMap(
+                options: new MapOptions(
+                  center: new LatLng(51.5, -0.09),
                   zoom: 5.0,
                 ),
                 layers: [
-                  TileLayerOptions(
+                  new TileLayerOptions(
                       urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                       subdomains: ['a', 'b', 'c']),
-                  PolylineLayerOptions(
+                  new PolylineLayerOptions(
                     polylines: [
-                      Polyline(
+                      new Polyline(
                           points: points,
                           strokeWidth: 4.0,
-                          color: Colors.purple),
+                          color: Colors.purple,
+                      ),
                     ],
                   )
                 ],

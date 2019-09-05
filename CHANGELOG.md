@@ -1,62 +1,3 @@
-## [0.5.6] - 7/9/2019
-- fix compatibility with flutter 1.7.8 (stable) (#296)
-
-Thanks to @MichalMisiaszek for the heads up and @slightfoot for help with
-upgrading (#296)!
-## [0.5.4] - 6/7/2019
-- fix markers on edge of screen disappearing (#313)
-- dart analysis fixes (#300)
-- add border circle (#299)
-- add dotted line to polygon (#295)
-- fix example esri page (#292)
-- add flutter_map_marker_cluster package to README (#309)
-
-Note: 0.5.x releases are compatable with Flutter's `stable` channel, currently
-v1.5.4-hotfix.2 and 0.6.x releases (also on the `flutter_map` `dev` branch) is a
-version of flutter_map compatible with Flutter's `dev` channel
-
-Thanks to @lpongetti @FalkF @Victor-emil @lsaudon and @lorenzo for this release!
-
-## [0.5.3] - 5/21/2019
-- update dependencies (#288)
-
-## [0.5.2] - 5/20/2019
-- fix zooming issue (#281)
-
-## [0.5.1] - 5/17/2019
-
-- add mbtiles
-- add formatting and linter rules
-- Fix null pointer in isOutOfBounds (#274)
-- add isUserGesture (#237)
-- fix emulator pinching error
-
-Thanks to @avbk, @OrKoN, @pintomic, @wmcshane, @manhluong for this release!
-
-## [0.5.0] - 2/21/2019
-
-- add cached network image support (#204)
-- Use PositionedTapDetector only in interactive mode (#207)
-- Allow defining CircleMarkerRadius in meters (#213)
-- support for tms tile coordinates (#214)
-- add moving markers example
-- add long press gesture for markers (#229)
-- add patreon badge to README
-- rename Point to CustomPoint (#187)
-- remove layers property from MapOptions (#193)
-
-Thanks to @SamuelRioTz, @jecoz, @4kssoft, @bugWebDeveloper, @RaimundWege,
-@vinicentus, and @etzuk for this release!
-
-## [0.4.0] - 12/31/2018
-- Zoom to focal point on double tap and scale gestures (#121)
-- Make anchor field public (#172)
-- FitBoundsOptions now uses EdgeInsets padding
-- Add GroupLayer
-- Update README
-
-Thanks to @tomwyr, @csjames, @kengu, @ocularrhythm for this release!
-
 ## [0.3.0] - 11/1/2018
 - PositionCallback now has hasGesture #139
 
@@ -93,7 +34,7 @@ Thanks to @LJaraCastillo, @ubilabs, @xqwzts, @vinicentus, and @lsaudon for this
 release!
 
 ## [0.1.0] - 8/21/2018
-- Set Dart SDK to 2
+- Set Dart SDK to ">=2.0.0 <3.0.0"
 
 ## [0.0.11] - 8/2/2018
 - upgrade to latlong from 0.4.0 to 0.5.3
@@ -112,8 +53,7 @@ this release!
 - Applied constraints to zoom on gesture update if min or max options set (#46)
 - Pan Boundary with 2 new MapOptions variables: swPanBoundary and nePanBoundary
 (#47)
-- OfflineMode bool variable added to TileLayerOptions for AssetImage Widget use
-(#48)
+- OfflineMode bool variable added to TileLayerOptions for AssetImage Widget use (#48)
 - remove quiver dep (#32)
 
 Thanks to contributors @avioli, @bcko, and @alfanhui for this release!

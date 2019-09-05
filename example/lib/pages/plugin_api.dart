@@ -1,36 +1,35 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
+import '../widgets/drawer.dart';
 import 'package:latlong/latlong.dart';
 
-import '../widgets/drawer.dart';
-
 class PluginPage extends StatelessWidget {
-  static const String route = 'plugins';
+  static const String route = "plugins";
 
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Plugins')),
+    return new Scaffold(
+      appBar: new AppBar(title: new Text("Plugins")),
       drawer: buildDrawer(context, PluginPage.route),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
+      body: new Padding(
+        padding: new EdgeInsets.all(8.0),
+        child: new Column(
           children: [
-            Flexible(
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+            new Flexible(
+              child: new FlutterMap(
+                options: new MapOptions(
+                  center: new LatLng(51.5, -0.09),
                   zoom: 5.0,
                   plugins: [
-                    MyCustomPlugin(),
+                    new MyCustomPlugin(),
                   ],
                 ),
                 layers: [
-                  TileLayerOptions(
+                  new TileLayerOptions(
                       urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                       subdomains: ['a', 'b', 'c']),
-                  MyCustomPluginOptions(text: "I'm a plugin!"),
+                  new MyCustomPluginOptions(text: "I'm a plugin!"),
                 ],
               ),
             ),
@@ -43,26 +42,25 @@ class PluginPage extends StatelessWidget {
 
 class MyCustomPluginOptions extends LayerOptions {
   final String text;
-  MyCustomPluginOptions({this.text = ''});
+  MyCustomPluginOptions({this.text = ""});
 }
 
 class MyCustomPlugin implements MapPlugin {
   @override
-  Widget createLayer(
-      LayerOptions options, MapState mapState, Stream<Null> stream) {
+  Widget createLayer(LayerOptions options, MapState mapState, Stream<Null> stream) {
     if (options is MyCustomPluginOptions) {
-      var style = TextStyle(
+      var style = new TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 24.0,
         color: Colors.red,
       );
-      return Text(
+      return new Text(
         options.text,
         style: style,
       );
     }
-    throw Exception('Unknown options type for MyCustom'
-        'plugin: $options');
+    throw ("Unknown options type for MyCustom"
+        "plugin: $options");
   }
 
   @override

@@ -1,11 +1,14 @@
+import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/src/map/map.dart';
 
 class GroupLayerOptions extends LayerOptions {
+
   List<LayerOptions> group = <LayerOptions>[];
 
   GroupLayerOptions({this.group});
+
 }
 
 class GroupLayer extends StatelessWidget {
@@ -15,9 +18,8 @@ class GroupLayer extends StatelessWidget {
 
   GroupLayer(this.groupOpts, this.map, this.stream);
 
-  @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
+    return new LayoutBuilder(
       builder: (BuildContext context, BoxConstraints bc) {
         return _build(context);
       },
@@ -27,33 +29,35 @@ class GroupLayer extends StatelessWidget {
   Widget _build(BuildContext context) {
     var layers = <Widget>[];
 
-    for (var options in groupOpts.group) {
-      layers.add(_createLayer(options));
-    }
+    groupOpts.group.forEach((options) =>
+        layers.add(_createLayer(options)));
 
-    return Container(
-      child: Stack(
+    return new Container(
+      child: new Stack(
         children: layers,
       ),
     );
+
   }
 
   Widget _createLayer(LayerOptions options) {
     if (options is MarkerLayerOptions) {
-      return MarkerLayer(options, map, options.rebuild);
+      return new MarkerLayer(
+          options, map, options.rebuild);
     }
     if (options is CircleLayerOptions) {
-      return CircleLayer(options, map, options.rebuild);
+      return new CircleLayer(
+          options, map, options.rebuild);
     }
     if (options is PolylineLayerOptions) {
-      return PolylineLayer(options, map, options.rebuild);
+      return new PolylineLayer(
+          options, map, options.rebuild);
     }
     if (options is PolygonLayerOptions) {
-      return PolygonLayer(options, map, options.rebuild);
+      return new PolygonLayer(
+          options, map, options.rebuild);
     }
-    if (options is OverlayImageLayerOptions) {
-      return OverlayImageLayer(options, map, options.rebuild);
-    }
-    throw Exception('Unknown options type for GeometryLayer: $options');
+    throw ("Unknown options type for GeometryLayer: $options");
   }
+
 }
