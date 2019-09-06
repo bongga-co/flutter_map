@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
-import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/src/map/map.dart';
@@ -8,16 +8,17 @@ import 'package:latlong/latlong.dart';
 
 typedef PolylineCallback(Polyline polyline, LatLng location);
 
-
 class PolylineLayerOptions extends LayerOptions {
   final List<Polyline> polylines;
   final PolylineCallback onTap;
   final PolylineCallback onLongPress;
+
   PolylineLayerOptions({
-    this.polylines = const [],
+    this.polylines = const [], 
     this.onTap,
     this.onLongPress,
-    rebuild}) : super(rebuild: rebuild);
+    rebuild
+  }) : super(rebuild: rebuild);
 }
 
 class Polyline {
@@ -31,9 +32,9 @@ class Polyline {
 
   Rect _bounds = Rect.zero;
 
-  bool get isEmpty => this.points == null || this.points.isEmpty;
-  bool get isNotEmpty => this.points != null && this.points.isNotEmpty;
-  Rect get bounds => this._bounds;
+  bool get isEmpty => points == null || points.isEmpty;
+  bool get isNotEmpty => points != null && points.isNotEmpty;
+  Rect get bounds => _bounds;
 
   Polyline({
     this.points,
@@ -52,18 +53,19 @@ class PolylineLayer extends StatelessWidget {
 
   PolylineLayer(this.polylineOpts, this.map, this.stream);
 
+  @override
   Widget build(BuildContext context) {
-    return new LayoutBuilder(
+    return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints bc) {
-        final size = new Size(bc.maxWidth, bc.maxHeight);
+        final size = Size(bc.maxWidth, bc.maxHeight);
         return _build(context, size);
       },
     );
   }
 
   Widget _build(BuildContext context, Size size) {
-    return new StreamBuilder<int>(
-      stream: stream, // a Stream<int> or null
+    return StreamBuilder<void>(
+      stream: stream, // a Stream<void> or null
       builder: (BuildContext context, _) {
         return Container(
           child: Stack(
@@ -76,27 +78,38 @@ class PolylineLayer extends StatelessWidget {
 
   List<Widget> _buildPolylines(Size size) {
     var list = polylineOpts.polylines
-        .where((polyline) => polyline.isNotEmpty)
-        .map((polyline) => _buildPolylineWidget(polyline, size))
-        .toList();
+      .where((polyline) => polyline.isNotEmpty)
+      .map((polyline) => _buildPolylineWidget(polyline, size))
+      .toList();
     return list;
   }
-
+ 
   Widget _buildPolylineWidget(Polyline polyline, Size size) {
     polyline.offsets.clear();
     polyline._bounds = Rect.zero;
+ 
     var i = 0;
     for (var point in polyline.points) {
-      var offset = map.latlngToOffset(point);
+      var pos = map.project(point);
+
+      pos = pos.multiplyBy(map.getZoomScale(map.zoom, map.zoom)) -
+          map.getPixelOrigin();
+
+      var offset = Offset(pos.x.toDouble(), pos.y.toDouble());
+
       polyline.offsets.add(offset);
+
       if (i > 0 && i < polyline.points.length) {
-        polyline.offsets.add(offset);
+        polyline.offsets
+          .add(Offset(pos.x.toDouble(), pos.y.toDouble()));
+
         polyline._bounds = polyline._bounds.expandToInclude(
-            Rect.fromPoints(polyline.offsets[i-1], offset)
+          Rect.fromPoints(polyline.offsets[i-1], offset)
         );
       }
       i++;
     }
+
     return CustomPaint(
       painter: PolylinePainter(polyline),
       size: size,
@@ -115,19 +128,19 @@ class PolylinePainter extends CustomPainter {
     }
     final rect = Offset.zero & size;
     canvas.clipRect(rect);
-    final paint = new Paint()
+    final paint = Paint()
       ..color = polylineOpt.color
       ..strokeWidth = polylineOpt.strokeWidth;
     final borderPaint = polylineOpt.borderStrokeWidth > 0.0
-        ? (new Paint()
+        ? (Paint()
           ..color = polylineOpt.borderColor
           ..strokeWidth =
               polylineOpt.strokeWidth + polylineOpt.borderStrokeWidth)
         : null;
-    double radius = polylineOpt.strokeWidth / 2;
-    double borderRadius = radius + (polylineOpt.borderStrokeWidth / 2);
+    var radius = polylineOpt.strokeWidth / 2;
+    var borderRadius = radius + (polylineOpt.borderStrokeWidth / 2);
     if (polylineOpt.isDotted) {
-      double spacing = polylineOpt.strokeWidth * 1.5;
+      var spacing = polylineOpt.strokeWidth * 1.5;
       if (borderPaint != null) {
         _paintDottedLine(
             canvas, polylineOpt.offsets, borderRadius, spacing, borderPaint);
@@ -143,15 +156,15 @@ class PolylinePainter extends CustomPainter {
 
   void _paintDottedLine(Canvas canvas, List<Offset> offsets, double radius,
       double stepLength, Paint paint) {
-    double startDistance = 0.0;
-    for (int i = 0; i < offsets.length - 1; i++) {
-      Offset o0 = offsets[i];
-      Offset o1 = offsets[i + 1];
-      double totalDistance = _dist(o0, o1);
-      double distance = startDistance;
+    var startDistance = 0.0;
+    for (var i = 0; i < offsets.length - 1; i++) {
+      var o0 = offsets[i];
+      var o1 = offsets[i + 1];
+      var totalDistance = _dist(o0, o1);
+      var distance = startDistance;
       while (distance < totalDistance) {
-        double f1 = distance / totalDistance;
-        double f0 = 1.0 - f1;
+        var f1 = distance / totalDistance;
+        var f0 = 1.0 - f1;
         var offset = Offset(o0.dx * f0 + o1.dx * f1, o0.dy * f0 + o1.dy * f1);
         canvas.drawCircle(offset, radius, paint);
         distance += stepLength;

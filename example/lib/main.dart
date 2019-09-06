@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
+
+import './pages/animated_map_controller.dart';
+import './pages/circle.dart';
 import './pages/esri.dart';
 import './pages/home.dart';
 import './pages/map_controller.dart';
-import './pages/animated_map_controller.dart';
 import './pages/marker_anchor.dart';
+import './pages/moving_markers.dart';
+import './pages/offline_map.dart';
+import './pages/offline_mbtiles_map.dart';
+import './pages/on_tap.dart';
+import './pages/overlay_image.dart';
 import './pages/plugin_api.dart';
+import './pages/plugin_scalebar.dart';
 import './pages/polyline.dart';
 import './pages/tap_to_add.dart';
-import './pages/offline_map.dart';
-import './pages/on_tap.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Map Example',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: mapBoxBlue,
       ),
-      home: new HomePage(),
+      home: HomePage(),
       routes: <String, WidgetBuilder>{
-        TapToAddPage.route: (context) => new TapToAddPage(),
-        EsriPage.route: (context) => new EsriPage(),
-        PolylinePage.route: (context) => new PolylinePage(),
-        MapControllerPage.route: (context) => new MapControllerPage(),
-        AnimatedMapControllerPage.route: (context) => new AnimatedMapControllerPage(),
-        MarkerAnchorPage.route: (context) => new MarkerAnchorPage(),
-        PluginPage.route: (context) => new PluginPage(),
-        OfflineMapPage.route: (context) => new OfflineMapPage(),
-        OnTapPage.route: (context) => new OnTapPage(),
+        TapToAddPage.route: (context) => TapToAddPage(),
+        EsriPage.route: (context) => EsriPage(),
+        PolylinePage.route: (context) => PolylinePage(),
+        MapControllerPage.route: (context) => MapControllerPage(),
+        AnimatedMapControllerPage.route: (context) =>
+            AnimatedMapControllerPage(),
+        MarkerAnchorPage.route: (context) => MarkerAnchorPage(),
+        PluginPage.route: (context) => PluginPage(),
+        PluginScaleBar.route: (context) => PluginScaleBar(),
+        OfflineMapPage.route: (context) => OfflineMapPage(),
+        OfflineMBTilesMapPage.route: (context) => OfflineMBTilesMapPage(),
+        OnTapPage.route: (context) => OnTapPage(),
+        MovingMarkersPage.route: (context) => MovingMarkersPage(),
+        CirclePage.route: (context) => CirclePage(),
+        OverlayImagePage.route: (context) => OverlayImagePage(),
       },
     );
   }

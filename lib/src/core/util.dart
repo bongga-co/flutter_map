@@ -6,12 +6,12 @@ import 'package:latlong/latlong.dart';
 
 const earthCircumferenceMeters = 40075016.686;
 
-var _templateRe = new RegExp(r"\{ *([\w_-]+) *\}");
+var _templateRe = RegExp(r'\{ *([\w_-]+) *\}');
 String template(String str, Map<String, String> data) {
   return str.replaceAllMapped(_templateRe, (Match match) {
     var value = data[match.group(1)];
     if (value == null) {
-      throw ("No value provided for variable ${match.group(1)}");
+      throw Exception('No value provided for variable ${match.group(1)}');
     } else {
       return value;
     }
@@ -26,18 +26,14 @@ double wrapNum(double x, Tuple2<double, double> range, [bool includeMax]) {
 }
 
 double getMetersPerPixel(double pixelsPerTile, double zoom, double latitude) {
-  double numTiles = math.pow(2, zoom).toDouble();
-  double metersPerTile =
+  var numTiles = math.pow(2, zoom).toDouble();
+  var metersPerTile =
       math.cos(degToRadian(latitude)) * earthCircumferenceMeters / numTiles;
   return metersPerTile / pixelsPerTile;
 }
 
-/// Use the Liang-Barsky algorithm to find the intersection points
-/// between a line segment and an axis-aligned rectangle.
-///
-/// See https://gist.github.com/ChickenProp/3194723
 bool intersects(Offset p1, Offset p2, Rect rect) {
-  Offset v = p2 - p1;
+  var v = p2 - p1;
   var p = [-v.dx, v.dx, -v.dy, v.dy];
   var q = [
     p1.dx - rect.left,
@@ -50,20 +46,23 @@ bool intersects(Offset p1, Offset p2, Rect rect) {
 
   for (var i in [0,1,2,3]) {
     if (p[i] == 0) {
-      if (q[i] < 0)
+      if (q[i] < 0) {
         return false;
+      }
     }
     else {
       var t = q[i] / p[i];
-      if (p[i] < 0 && u1 < t)
+      if (p[i] < 0 && u1 < t) {
         u1 = t;
-      else if (p[i] > 0 && u2 > t)
+      } else if (p[i] > 0 && u2 > t) {
         u2 = t;
+      }
     }
   }
 
-  if (u1 > u2 || u1 > 1 || u1 < 0)
+  if (u1 > u2 || u1 > 1 || u1 < 0) {
     return false;
+  }
 
   return true;
 }
