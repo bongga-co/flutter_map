@@ -214,9 +214,10 @@ abstract class MapGestureMixin extends State<FlutterMap>
   Map _elementHitTest(LatLng point) {
     var offset = map.latlngToOffset(point);
     var tap = Rect.fromCircle(center: offset, radius: 10.0);
+
     for (var layer in widget.layers.reversed) {
       if (layer is PolygonLayerOptions) {
-        var polygon = _polygonHitTest(tap, layer);
+        var polygon = _polygonHitTest(tap, offset, layer);
         if (polygon != null) return {layer: polygon};
       } else if (layer is PolylineLayerOptions) {
         var polyline = _polylineHitTest(tap, layer);
@@ -233,14 +234,11 @@ abstract class MapGestureMixin extends State<FlutterMap>
   /// tapped [location].
   ///
   /// Returns null if no polygon was touched.
-  Polygon _polygonHitTest(Rect tap, PolygonLayerOptions layer) {
+  Polygon _polygonHitTest(Rect tap, Offset point, PolygonLayerOptions layer) {
     for (var polygon in layer.polygons.reversed) {
-      if (tap.overlaps(polygon.bounds)) {
-        for (var i = 0; i < polygon.offsets.length - 1; i++) {
-          if (util.intersects(polygon.offsets[i], polygon.offsets[i + 1], tap)) {
-            return polygon;
-          }
-        }
+      final points = polygon.offsets.toSet().toList();
+      if(tap.overlaps(polygon.bounds) && util.inPolygon(point, points)) {
+        return polygon;
       }
     }
     return null;

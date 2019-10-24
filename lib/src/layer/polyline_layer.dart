@@ -100,9 +100,7 @@ class PolylineLayer extends StatelessWidget {
       polyline.offsets.add(offset);
 
       if (i > 0 && i < polyline.points.length) {
-        polyline.offsets
-          .add(Offset(pos.x.toDouble(), pos.y.toDouble()));
-
+        polyline.offsets.add(Offset(pos.x.toDouble(), pos.y.toDouble()));
         polyline._bounds = polyline._bounds.expandToInclude(
           Rect.fromPoints(polyline.offsets[i-1], offset)
         );

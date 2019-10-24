@@ -66,3 +66,80 @@ bool intersects(Offset p1, Offset p2, Rect rect) {
 
   return true;
 }
+
+bool inPolygon(Offset point, List<Offset> polygon) {
+  var vertexPosition = polygon.firstWhere((item) 
+    => item == point, orElse: () => null);
+
+  if (vertexPosition != null) {
+    return true;
+  }
+
+  // Check if the point is inside the polygon or on the boundary
+  var intersections = 0;
+  final vertices = polygon.length;
+
+  for (var i = 0; i < vertices - 1; i++) {
+    var vertex1 = polygon[i];
+    var vertex2 = polygon[i + 1];
+
+    // Check if point is on an horizontal polygon boundary
+    if (
+      vertex1.dx == vertex2.dx && vertex1.dx == point.dx &&
+      point.dy > math.min(vertex1.dy, vertex2.dy) &&
+      point.dy < math.max(vertex1.dy, vertex2.dy)
+    ) {
+      return true;
+    }
+
+    if (
+      point.dx > math.min(vertex1.dx, vertex2.dx) &&
+      point.dx <= math.max(vertex1.dx, vertex2.dx) &&
+      point.dy <= math.max(vertex1.dy, vertex2.dy) &&
+      vertex1.dx != vertex2.dx
+    ) {
+      var xinters = (point.dx - vertex1.dx) * (vertex2.dy - vertex1.dy) /
+        (vertex2.dx - vertex1.dx) + vertex1.dy;
+
+      if (xinters == point.dy) {
+        return true;
+      }
+
+      if (vertex1.dy == vertex2.dy || point.dy <= xinters) {
+        intersections++;
+      }
+    }
+  }
+
+  var vertex1 = polygon[vertices - 1];
+  var vertex2 = polygon[0];
+
+  // Check if point is on an horizontal polygon boundary
+  if (
+    vertex1.dx == vertex2.dx && vertex1.dx == point.dx &&
+    point.dy > math.min(vertex1.dy, vertex2.dy) &&
+    point.dy < math.max(vertex1.dy, vertex2.dy)
+  ) {
+    return true;
+  }
+
+  if (
+    point.dx > math.min(vertex1.dx, vertex2.dx) &&
+    point.dx <= math.max(vertex1.dx, vertex2.dx) &&
+    point.dy <= math.max(vertex1.dy, vertex2.dy) &&
+    vertex1.dx != vertex2.dx
+  ) {
+    var xinters = (point.dx - vertex1.dx) * (vertex2.dy - vertex1.dy) /
+      (vertex2.dx - vertex1.dx) + vertex1.dy;
+
+    if (xinters == point.dy) {
+      return true;
+    }
+
+    if (vertex1.dy == vertex2.dy || point.dy <= xinters) {
+      intersections++;
+    }
+  }
+
+  return intersections % 2 != 0;
+}

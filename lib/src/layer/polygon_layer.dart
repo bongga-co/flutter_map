@@ -79,9 +79,7 @@ class PolygonLayer extends StatelessWidget {
             polygonOpt.offsets.add(offset);
 
             if (i > 0 && i < polygonOpt.points.length) {
-              polygonOpt.offsets
-                  .add(Offset(pos.x.toDouble(), pos.y.toDouble()));
-
+              polygonOpt.offsets.add(Offset(pos.x.toDouble(), pos.y.toDouble()));
               polygonOpt._bounds = polygonOpt._bounds.expandToInclude(
                 Rect.fromPoints(polygonOpt.offsets[i-1], offset)
               );
