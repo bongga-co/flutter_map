@@ -24,7 +24,8 @@ class HomePage extends StatelessWidget {
         point: LatLng(53.3498, -6.2603),
         builder: (ctx) => Container(
           child: FlutterLogo(
-            colors: Colors.green,
+            textColor: Colors.green,
+            key: ObjectKey(Colors.green),
           ),
         ),
       ),
@@ -33,7 +34,10 @@ class HomePage extends StatelessWidget {
         height: 80.0,
         point: LatLng(48.8566, 2.3522),
         builder: (ctx) => Container(
-          child: FlutterLogo(colors: Colors.purple),
+          child: FlutterLogo(
+            textColor: Colors.purple,
+            key: ObjectKey(Colors.purple),
+          ),
         ),
       ),
     ];

@@ -48,7 +48,7 @@ class OnTapPageState extends State<OnTapPage> {
             ));
           },
           child: FlutterLogo(
-            colors: Colors.green,
+            textColor: Colors.green,
           ),
         )),
       ),
@@ -63,7 +63,7 @@ class OnTapPageState extends State<OnTapPage> {
               content: Text('Tapped on purple FlutterLogo Marker'),
             ));
           },
-          child: FlutterLogo(colors: Colors.purple),
+          child: FlutterLogo(textColor: Colors.purple),
         )),
       ),
     ];
@@ -96,15 +96,18 @@ class OnTapPageState extends State<OnTapPage> {
                       subdomains: ['a', 'b', 'c']),
                   MarkerLayerOptions(markers: markers),
                   PolygonLayerOptions(
-                    onTap: (polygon, point) => print('Tapping: $polygon'),
-                    polygons: [
-                      Polygon(points: [london, paris, dublin])
-                    ]
-                  ),
+                      onTap: (polygon, point) => print('Tapping: $polygon'),
+                      polygons: [
+                        Polygon(points: [london, paris, dublin])
+                      ]),
                   PolylineLayerOptions(
                     onTap: (line, point) => print('Tapping: $line'),
                     polylines: [
-                      Polyline(points: [london, paris], strokeWidth: 3, isDotted: true, color: Colors.orange)
+                      Polyline(
+                          points: [london, paris],
+                          strokeWidth: 3,
+                          isDotted: true,
+                          color: Colors.orange)
                     ],
                   )
                 ],
